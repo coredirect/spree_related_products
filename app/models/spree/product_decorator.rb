@@ -32,23 +32,6 @@ Spree::Product.class_eval do
       .references(self)
   end
 
-  # Decides if there is a relevant Spree::RelationType related to this class
-  # which should be returned for this method.
-  #
-  # If so, it calls relations_for_relation_type. Otherwise it passes
-  # it up the inheritance chain.
-  def method_missing(method, *args)
-    # Fix for Ruby 1.9
-    raise NoMethodError if method == :to_ary
-
-    relation_type = find_relation_type(method)
-    if relation_type.nil?
-      super
-    else
-      relations_for_relation_type(relation_type)
-    end
-  end
-
   def has_related_products?(relation_method)
     find_relation_type(relation_method).present?
   end
